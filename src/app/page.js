@@ -1,65 +1,90 @@
-import Image from "next/image";
+import dbConnect from '@/lib/db';
+import SiteContent from '@/models/SiteContent';
+import Product from '@/models/Product';
+import dynamic from 'next/dynamic';
 
-export default function Home() {
+import TopBar from '@/components/TopBar';
+import Header from '@/components/Header';
+import NavBar from '@/components/NavBar';
+import Hero from '@/components/Hero';
+import ProductSection from '@/components/ProductSection';
+import Footer from '@/components/Footer';
+
+// Lazy-load client components to code-split their JavaScript
+const BestSellersSection = dynamic(() => import('@/components/BestSellersSection'));
+const Lookbook = dynamic(() => import('@/components/Lookbook'));
+const ParallaxCampaign = dynamic(() => import('@/components/ParallaxCampaign'));
+const FeaturedLook = dynamic(() => import('@/components/FeaturedLook'));
+
+// Cache the page for 60 seconds — admin changes appear within a minute
+export const revalidate = 60;
+
+export default async function Home() {
+  await dbConnect();
+  // Run all DB queries in parallel instead of sequentially
+  const [content, newArrivals, bestSellers] = await Promise.all([
+    SiteContent.findOne({ identifier: 'global_content' })
+      .populate('parallaxCampaign.productId')
+      .populate('featuredLook.item1ProductId')
+      .populate('featuredLook.item2ProductId')
+      .populate('featuredLook.item3ProductId')
+      .populate('lookbook.item1ProductId')
+      .populate('lookbook.item2ProductId')
+      .populate('lookbook.item3ProductId')
+      .lean(),
+    Product.find({ isFeatured: true }).lean(),
+    Product.find({ isBestSeller: true }).lean(),
+  ]);
+
+  const defaultContent = {
+    visibility: {
+      hero: true, newArrivals: true, bestSellers: true, lookbook: true, parallaxCampaign: true, featuredLook: true
+    },
+    hero: { heading: "NEW POCKET LONG SLEEVE SHIRT", subheading: "AURA MENS", buttonText: "SHOP MENS", buttonLink: "/shop?category=mens", image: "/hero_fashion_bg.png" },
+    parallaxCampaign: { heading: "The Winter\nCollection", subheading: "Embrace the cold with our most premium fabrics.", buttonText: "PRE-ORDER NOW", buttonLink: "/shop", image: "/parallax_campaign.png" },
+    featuredLook: { heading: "Urban\nNomad", description: "A masterclass in transitional dressing.", bundlePrice: 45000, buttonText: "ADD BUNDLE TO CART", image: "/lookbook_portrait.png" },
+    lookbook: { 
+      heading: "SHOP THE LOOK", 
+      subheading: "Editorial Style", 
+      shopHeading: "The Autumn Edit",
+      shopDescription: "Discover the perfect balance of comfort and sophistication. This curated look combines oversized tailoring with effortless drape, designed for the modern wardrobe.",
+      buttonText: "ADD ENTIRE LOOK TO CART",
+      images: ["/lookbook_portrait.png", "/product_card_1.png", "/product_card_2.png", "/product_card_1.png"],
+      item1Top: "20%", item1Left: "30%",
+      item2Top: "60%", item2Left: "45%",
+      item3Top: "45%", item3Left: "70%"
+    }
+  };
+  
+  // Merge database content with defaults to handle missing fields in older documents
+  const heroContent = content ? {
+    visibility: { ...defaultContent.visibility, ...(content.visibility || {}) },
+    hero: { ...defaultContent.hero, ...(content.hero || {}) },
+    parallaxCampaign: { ...defaultContent.parallaxCampaign, ...(content.parallaxCampaign || {}) },
+    featuredLook: { ...defaultContent.featuredLook, ...(content.featuredLook || {}) },
+    lookbook: { ...defaultContent.lookbook, ...(content.lookbook || {}) }
+  } : defaultContent;
+
+  // Serialize content to strip Mongoose ObjectIds
+  const serializedContent = JSON.parse(JSON.stringify(heroContent));
+  const visibility = serializedContent.visibility;
+
+  // Convert ObjectIds to strings to avoid Next.js serialization warnings
+  const serializedNewArrivals = JSON.parse(JSON.stringify(newArrivals)).map(p => ({ ...p, id: p._id }));
+  const serializedBestSellers = JSON.parse(JSON.stringify(bestSellers)).map(p => ({ ...p, id: p._id }));
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.js file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <main className="min-h-screen bg-white">
+      <TopBar />
+      <Header />
+      <NavBar />
+      {visibility.hero && <Hero data={serializedContent.hero} />}
+      {visibility.newArrivals && <ProductSection products={serializedNewArrivals} />}
+      {visibility.bestSellers && <BestSellersSection products={serializedBestSellers} />}
+      {visibility.lookbook && <Lookbook data={serializedContent.lookbook} />}
+      {visibility.parallaxCampaign && <ParallaxCampaign data={serializedContent.parallaxCampaign} />}
+      {visibility.featuredLook && <FeaturedLook data={serializedContent.featuredLook} />}
+      <Footer />
+    </main>
   );
 }

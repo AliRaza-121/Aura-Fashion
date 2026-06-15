@@ -1,26 +1,202 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-whatsapp: #25D366;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+html, body {
+  overflow-x: hidden !important;
+  width: 100%;
+  position: relative;
+  top: 0px !important; /* Fix Google Translate Body Push */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* --- GOOGLE TRANSLATE WIDGET STYLING --- */
+.goog-te-gadget {
+  font-family: inherit !important;
+  color: transparent !important;
+  font-size: 0px !important;
+}
+
+/* Target the specific select element with stronger specificity */
+div#google_translate_element select.goog-te-combo {
+  font-family: inherit !important;
+  color: #9ca3af !important; /* text-gray-400 */
+  background-color: #000000 !important; /* Force true black */
+  background: #000000 !important; /* Override shorthand */
+  border: none !important;
+  font-size: 11px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  font-weight: 500 !important;
+  outline: none !important;
+  box-shadow: none !important;
+  cursor: pointer;
+  padding: 0 4px !important;
+  margin: 0 !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  width: auto !important;
+}
+
+div#google_translate_element select.goog-te-combo option {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+div#google_translate_element select.goog-te-combo:hover {
+  color: #ffffff !important;
+}
+.goog-te-banner-frame,
+.goog-te-banner-frame.skiptranslate,
+iframe.goog-te-banner-frame {
+  display: none !important; /* Hide Google Banner */
+}
+body > .skiptranslate {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+.skiptranslate > iframe.goog-te-banner-frame {
+  display: none !important;
+}
+.VIpgJd-ZVi9od-aZ2wEe-wOHMyf { /* Some modern Google Translate banner class */
+  display: none !important;
+}
+#goog-gt-tt,
+.VIpgJd-ZVi9od-l4eHX-hSRGPd {
+  display: none !important; /* Hide tooltip */
+}
+
+/* Ensure all interactive elements have a pointer cursor (Tailwind v4 removes this by default for buttons) */
+@layer base {
+  button, 
+  [role="button"],
+  select {
+    cursor: pointer;
+  }
+
+  /* Accessibility: Global Focus Styles */
+  a:focus-visible, 
+  button:focus-visible {
+    @apply outline-none ring-2 ring-black ring-offset-2;
+  }
+
+  /* Prevent ugly default outlines, rings, and harsh borders on inputs when clicked */
+  input:focus, 
+  textarea:focus, 
+  select:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    border-color: #d1d5db !important;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@keyframes marquee { 0% { transform: translateX(0%); } 100% { transform: translateX(-50%); } }
+
+/* Chrome Autofill Hack */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px #050505 inset !important;
+  -webkit-text-fill-color: white !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Global Custom Scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #d1d5db transparent;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #d1d5db;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #9ca3af;
+}
+
+@layer utilities {
+  .no-scrollbar {
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
+}
+
+/* --- PREMIUM GLOBAL CTA HOVER EFFECTS --- */
+@layer base {
+  /* 1. Base transition for all CTA buttons */
+  button[class*="bg-black"]:not(:has(img)):not(:has(svg:only-child)), 
+  button[class*="bg-gray-900"]:not(:has(img)):not(:has(svg:only-child)), 
+  button[class*="border-black"]:not(:has(img)):not(:has(svg:only-child)), 
+  button[class*="border-gray-900"]:not(:has(img)):not(:has(svg:only-child)),
+  a[class*="bg-black"]:not(:has(img)):not(:has(svg:only-child)), 
+  a[class*="bg-gray-900"]:not(:has(img)):not(:has(svg:only-child)), 
+  a[class*="border-black"]:not(:has(img)):not(:has(svg:only-child)), 
+  a[class*="border-gray-900"]:not(:has(img)):not(:has(svg:only-child)) {
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease !important;
+  }
+
+  /* 2. Black Button -> Ghost Outline (Background fades, border remains) */
+  button[class*="bg-black"]:hover:not(:disabled):not(:has(svg:only-child)):not(:has(img)), 
+  button[class*="bg-gray-900"]:hover:not(:disabled):not(:has(svg:only-child)):not(:has(img)),
+  a[class*="bg-black"]:hover:not(:has(svg:only-child)):not(:has(img)), 
+  a[class*="bg-gray-900"]:hover:not(:has(svg:only-child)):not(:has(img)) {
+    background-color: transparent !important;
+    color: #000 !important;
+    box-shadow: inset 0 0 0 1px #000 !important;
+  }
+
+  /* 3. White/Border Button -> Solid Fill (Inverts to black) */
+  button[class*="border-black"]:not([class*="bg-black"]):hover:not(:disabled):not(:has(svg:only-child)):not(:has(img)), 
+  button[class*="border-gray-900"]:not([class*="bg-gray-900"]):hover:not(:disabled):not(:has(svg:only-child)):not(:has(img)),
+  a[class*="border-black"]:not([class*="bg-black"]):hover:not(:has(svg:only-child)):not(:has(img)), 
+  a[class*="border-gray-900"]:not([class*="bg-gray-900"]):hover:not(:has(svg:only-child)):not(:has(img)) {
+    background-color: #000 !important;
+    color: #fff !important;
+  }
+}
+
+/* --- PREMIUM NAVBAR UNDERLINE HOVER --- */
+@layer utilities {
+  .nav-link-hover {
+    position: relative;
+  }
+  
+  .nav-link-hover::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    transform: scaleX(0);
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: #000;
+    transform-origin: bottom right;
+    transition: transform 0.3s cubic-bezier(0.86, 0, 0.07, 1);
+  }
+  
+  .nav-link-hover:hover::after,
+  .nav-link-hover:focus-visible::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+  }
 }
