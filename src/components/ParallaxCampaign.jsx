@@ -52,13 +52,19 @@ export default function ParallaxCampaign({ data }) {
         }
       `}} />
       
-      {/* Parallax Background */}
-      <div 
-        className="absolute inset-0 z-0 bg-fixed bg-center bg-cover"
-        style={{ 
-          backgroundImage: `url('${cData.image}')`,
-        }}
-      >
+      {/* Parallax Background - using Next.js Image for optimization */}
+      <div className="absolute inset-0 z-0 overflow-hidden">
+        <div className="fixed inset-0" style={{ zIndex: -1 }}>
+          <Image 
+            src={cData.image}
+            alt="Campaign Background"
+            fill
+            sizes="100vw"
+            placeholder="blur"
+            blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iIzJhMmEyYSIvPjwvc3ZnPg=="
+            className="object-cover object-center"
+          />
+        </div>
         <div className="absolute inset-0 bg-black/40 mix-blend-multiply"></div>
       </div>
 

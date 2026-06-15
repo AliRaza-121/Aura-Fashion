@@ -124,7 +124,7 @@ export default function ProductSection({ products = [] }) {
               
               return (
               <div key={productId} className="min-w-[280px] w-[280px] snap-start h-full">
-                <ProductCard product={product} priority={idx < 4} />
+                <ProductCard product={product} priority={idx < 2} />
               </div>
             )})}
           </div>

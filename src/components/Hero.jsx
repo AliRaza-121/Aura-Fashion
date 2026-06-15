@@ -21,6 +21,8 @@ export default function Hero({ data }) {
           fill
           priority
           sizes="(max-width: 768px) 100vw, 55vw"
+          placeholder="blur"
+          blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2U4ZThlOCIvPjwvc3ZnPg=="
           className="object-cover object-top mix-blend-multiply"
         />
       </div>

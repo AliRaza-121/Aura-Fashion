@@ -10,11 +10,26 @@ import Hero from '@/components/Hero';
 import ProductSection from '@/components/ProductSection';
 import Footer from '@/components/Footer';
 
+// Lightweight skeleton placeholder for below-fold sections
+const SectionSkeleton = () => (
+  <div className="w-full py-24 flex items-center justify-center">
+    <div className="w-12 h-12 border-2 border-gray-200 border-t-gray-800 rounded-full animate-spin" />
+  </div>
+);
+
 // Lazy-load client components to code-split their JavaScript
-const BestSellersSection = dynamic(() => import('@/components/BestSellersSection'));
-const Lookbook = dynamic(() => import('@/components/Lookbook'));
-const ParallaxCampaign = dynamic(() => import('@/components/ParallaxCampaign'));
-const FeaturedLook = dynamic(() => import('@/components/FeaturedLook'));
+const BestSellersSection = dynamic(() => import('@/components/BestSellersSection'), { 
+  loading: () => <SectionSkeleton /> 
+});
+const Lookbook = dynamic(() => import('@/components/Lookbook'), { 
+  loading: () => <SectionSkeleton /> 
+});
+const ParallaxCampaign = dynamic(() => import('@/components/ParallaxCampaign'), { 
+  loading: () => <SectionSkeleton /> 
+});
+const FeaturedLook = dynamic(() => import('@/components/FeaturedLook'), { 
+  loading: () => <SectionSkeleton /> 
+});
 
 // Cache the page for 60 seconds — admin changes appear within a minute
 export const revalidate = 60;

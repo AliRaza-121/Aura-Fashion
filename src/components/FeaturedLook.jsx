@@ -70,6 +70,8 @@ export default function FeaturedLook({ data }) {
               alt="New Arrival Featured Look"
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"
+              placeholder="blur"
+              blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2U4ZThlOCIvPjwvc3ZnPg=="
               className="object-cover z-10 transition-transform duration-700 group-hover:scale-[0.98]"
             />
             

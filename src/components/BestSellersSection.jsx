@@ -98,7 +98,7 @@ export default function BestSellersSection({ products = [] }) {
                       src={product.images?.[0] || `/product_card_${(idx % 2) + 1}.png`} 
                       alt={product.title || product.name}
                       fill
-                      priority={idx < 4}
+                      loading="lazy"
                       sizes="(max-width: 768px) 260px, 400px"
                       className="object-cover mix-blend-multiply transition-opacity duration-700 ease-in-out group-hover/card:opacity-0 z-20"
                     />
@@ -106,7 +106,7 @@ export default function BestSellersSection({ products = [] }) {
                       src={product.images?.[1] || product.images?.[0] || `/product_card_${((idx + 1) % 2) + 1}.png`} 
                       alt={product.title || product.name}
                       fill
-                      priority={idx < 4}
+                      loading="lazy"
                       sizes="(max-width: 768px) 260px, 400px"
                       className="object-cover mix-blend-multiply opacity-0 group-hover/card:opacity-100 transition-opacity duration-700 ease-in-out z-10"
                     />
