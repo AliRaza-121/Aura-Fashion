@@ -120,7 +120,7 @@ export default function TrackOrder() {
                   <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-gray-200 rounded-full z-0"></div>
                   <div 
                     className="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-black rounded-full z-0 transition-all duration-1000 ease-out"
-                    style={{ width: \`\${currentStatusIndex === -1 ? 0 : (currentStatusIndex / (statuses.length - 1)) * 100}%\` }}
+                    style={{ width: `${currentStatusIndex === -1 ? 0 : (currentStatusIndex / (statuses.length - 1)) * 100}%` }}
                   ></div>
 
                   {/* Steps */}
@@ -134,10 +134,10 @@ export default function TrackOrder() {
                     
                     return (
                       <div key={step.title} className="relative z-10 flex flex-col items-center">
-                        <div className={\`w-12 h-12 md:w-16 md:h-16 rounded-full flex items-center justify-center transition-all duration-500 border-4 \${isCompleted ? 'bg-black text-white border-white' : 'bg-white text-gray-400 border-gray-100'}\`}>
+                        <div className={`w-12 h-12 md:w-16 md:h-16 rounded-full flex items-center justify-center transition-all duration-500 border-4 ${isCompleted ? 'bg-black text-white border-white' : 'bg-white text-gray-400 border-gray-100'}`}>
                           {step.icon}
                         </div>
-                        <p className={\`mt-4 font-bold tracking-widest uppercase text-xs md:text-sm text-center \${isCompleted ? 'text-black' : 'text-gray-400'}\`}>
+                        <p className={`mt-4 font-bold tracking-widest uppercase text-xs md:text-sm text-center ${isCompleted ? 'text-black' : 'text-gray-400'}`}>
                           {step.title}
                         </p>
                       </div>
