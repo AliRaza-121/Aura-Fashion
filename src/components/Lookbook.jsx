@@ -89,20 +89,23 @@ export default function Lookbook({ data }) {
             />
             
             {/* Interactive Pins */}
-            {lookItems.map((item, idx) => (
-              <button 
-                key={item.id} 
-                className="absolute w-8 h-8 -translate-x-1/2 -translate-y-1/2 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-black hover:text-white transition-colors hover:scale-110 shadow-lg group/pin border-none cursor-pointer"
-                style={{ top: item.top, left: item.left }}
-                aria-label={`View details for ${item.name}`}
-                onClick={(e) => handleAddToCart(item, idx, e)}
-              >
-                <Plus size={16} />
-                <div className="absolute left-10 top-1/2 -translate-y-1/2 bg-white px-4 py-2 text-xs font-bold shadow-xl whitespace-nowrap opacity-0 group-hover/pin:opacity-100 transition-opacity text-black z-50">
-                  {item.name} - {item.price}
-                </div>
-              </button>
-            ))}
+            {lookItems.map((item, idx) => {
+              const isLeftHigh = parseInt(item.left) > 50;
+              return (
+                <button 
+                  key={item.id} 
+                  className="absolute w-8 h-8 -translate-x-1/2 -translate-y-1/2 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-black hover:text-white transition-colors hover:scale-110 shadow-lg group/pin border-none cursor-pointer"
+                  style={{ top: item.top, left: item.left }}
+                  aria-label={`View details for ${item.name}`}
+                  onClick={(e) => handleAddToCart(item, idx, e)}
+                >
+                  <Plus size={16} />
+                  <div className={`absolute ${isLeftHigh ? 'right-10' : 'left-10'} top-1/2 -translate-y-1/2 bg-white px-4 py-2 text-xs font-bold shadow-xl whitespace-nowrap opacity-0 group-hover/pin:opacity-100 transition-opacity text-black z-50`}>
+                    {item.name} - {item.price}
+                  </div>
+                </button>
+              );
+            })}
           </div>
 
           {/* Shop The Look Panel */}

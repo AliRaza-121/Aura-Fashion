@@ -107,10 +107,10 @@ export default function ProductSection({ products = [] }) {
           {displayProducts.length > 4 && (
             <button 
               onClick={() => scroll('left')}
-              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-6 w-14 h-14 bg-white border border-gray-200 rounded-full flex items-center justify-center shadow-lg z-50 text-gray-600 hover:text-black hover:bg-gray-50 opacity-0 group-hover:opacity-100 transition-opacity"
+              className="absolute left-2 md:left-0 top-1/2 -translate-y-1/2 md:-translate-x-6 w-10 h-10 md:w-14 md:h-14 bg-white border border-gray-200 rounded-full flex items-center justify-center shadow-lg z-50 text-gray-600 hover:text-black hover:bg-gray-50 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
               aria-label="Scroll left"
             >
-              <ChevronLeft size={28} />
+              <ChevronLeft className="w-5 h-5 md:w-7 md:h-7" />
             </button>
           )}
 
@@ -132,10 +132,10 @@ export default function ProductSection({ products = [] }) {
           {displayProducts.length > 4 && (
             <button 
               onClick={() => scroll('right')}
-              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-6 w-14 h-14 bg-white border border-gray-200 rounded-full flex items-center justify-center shadow-lg z-50 text-gray-600 hover:text-black hover:bg-gray-50 opacity-0 group-hover:opacity-100 transition-opacity"
+              className="absolute right-2 md:right-0 top-1/2 -translate-y-1/2 md:translate-x-6 w-10 h-10 md:w-14 md:h-14 bg-white border border-gray-200 rounded-full flex items-center justify-center shadow-lg z-50 text-gray-600 hover:text-black hover:bg-gray-50 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
               aria-label="Scroll right"
             >
-              <ChevronRight size={28} />
+              <ChevronRight className="w-5 h-5 md:w-7 md:h-7" />
             </button>
           )}
         </div>
